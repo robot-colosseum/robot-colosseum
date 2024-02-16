@@ -1,0 +1,19 @@
+[build-system]
+requires = [
+  "setuptools>=65.7.0",
+  "wheel>=0.40.0"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 80
+target-version = ['py38']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+
+[tool.pyright]
+pythonVersion = '3.8'
+venvPath = ''
+venv = ''
