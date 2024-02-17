@@ -1,3 +1,9 @@
 from setuptools import setup
 
-setup()
+setup(
+    package_data={
+        "colosseum": [
+            "rlbench/task_ttms/*.ttm",
+        ],
+    },
+)
