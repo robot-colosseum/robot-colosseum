@@ -84,17 +84,19 @@ def sampleColor(
 
 
 class ScaleConfigMode(Enum):
-    # Sample a random value from a list of possible scale factors
-    USE_CUSTOM_SCALE_VALUES = 0
+    # Sample a random value from the standard uniform distribution
+    USE_DEFAULT_SCALE_RANGE = 0
     # Sample a random value within a custom range
     USE_CUSTOM_SCALE_RANGE = 1
+    # Sample a random value from a list of possible scale factors
+    USE_CUSTOM_SCALE_VALUES = 2
 
 
 def sampleScale(
     mode: ScaleConfigMode,
     rng: np.random.Generator,
-    scale_list: List[float] = [],
     scale_range: Tuple[float, float] = (0.75, 1.25),
+    scale_list: List[float] = [],
 ) -> Optional[float]:
     """
     Samples a random scale value using one of many options given by the user
@@ -105,12 +107,12 @@ def sampleScale(
             The mode that will be used to sample scale values
         rng: np.random.Generator
             The random generator used to make the sampling process
-        scale_list: List[float]
-            The list of scale values from which to sample from, used only if
-            using the USE_CUSTOM_SCALE_VALUES mode
         scale_range: Tuple[float, float]
             The minimum and maximum scale values to sample from, used only if
             using the USE_CUSTOM_SCALE_RANGE mode
+        scale_list: List[float]
+            The list of scale values from which to sample from, used only if
+            using the USE_CUSTOM_SCALE_VALUES mode
 
     Returns
     -------
@@ -119,9 +121,8 @@ def sampleScale(
             something went wrong during the sampling process
     """
     scale_value: Optional[float] = None
-    if mode == ScaleConfigMode.USE_CUSTOM_SCALE_VALUES:
-        assert len(scale_list) > 0, "Not enough scales provided in list"
-        scale_value = rng.choice(scale_list)
+    if mode == ScaleConfigMode.USE_DEFAULT_SCALE_RANGE:
+        scale_value = rng.uniform(0.0, 1.0)
     elif mode == ScaleConfigMode.USE_CUSTOM_SCALE_RANGE:
         assert len(scale_range) == 2, "Scale range must be in format (low,high)"
         try:
@@ -131,6 +132,9 @@ def sampleScale(
                 "Something went wrong while using the"
                 + f" given scale ranges. Range is '{scale_range}'"
             )
+    elif mode == ScaleConfigMode.USE_CUSTOM_SCALE_VALUES:
+        assert len(scale_list) > 0, "Not enough scales provided in list"
+        scale_value = rng.choice(scale_list)
 
     return scale_value
 
