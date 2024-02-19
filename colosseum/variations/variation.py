@@ -63,7 +63,7 @@ class IVariation(abc.ABC):
         if len(self._targets) < 1:
             warnings.warn(
                 "IVariation > couldn't find any related targets in "
-                + f"the simulation. Targets names was: {targets_names}"
+                + f"the simulation. Targets names were: {targets_names}"
             )
 
         self._enabled = True
