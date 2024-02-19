@@ -26,7 +26,7 @@ class CameraPoseVariation(IVariation):
         ----------
             pyrep: PyRep
                 A handle to the pyrep simulation
-            name: str
+            name: Optional[str]
                 A unique identifier for this variation
             targets_names: List[str]
                 A list of names for the Cameras in simulation to be controlled
