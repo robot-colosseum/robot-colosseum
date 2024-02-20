@@ -1,0 +1,178 @@
+data:
+  # Where to save the demos
+  save_path: /tmp/rlbench_data/
+  # The size of the images to save
+  image_size: [512, 512]
+  # The renderer to use. Either opengl or opengl3. The first has no shadows
+  renderer: opengl3
+  # The number of episodes to collect per task
+  episodes_per_task: 5
+  # The image types that will be recorded
+  images:
+    rgb: True
+    depth: False
+    mask: False
+    point_cloud: True
+  # The cameras that we will be enabled
+  cameras:
+    left_shoulder: False
+    right_shoulder: False
+    overhead: False
+    wrist: False
+    front: True
+  # Store depth as 0 - 1
+  depth_in_meters: False
+  # We want to save the masks as rgb encodings.
+  masks_as_one_channel: False
+env:
+  task_name: "setup_chess"
+  seed: 42
+  scene:
+    factors:
+
+      - variation: object_color
+        name: manip_obj_color
+        enabled: False
+        targets: [black_king,
+                  black_queen,
+                  black_kingside_bishop,
+                  black_queenside_bishop,
+                  black_kingside_knight,
+                  black_queenside_knight,
+                  black_kingside_rook,
+                  black_queenside_rook,
+                  black_pawn_a,
+                  black_pawn_b,
+                  black_pawn_c,
+                  black_pawn_d,
+                  black_pawn_e,
+                  black_pawn_f,
+                  black_pawn_g,
+                  black_pawn_h,
+                  white_king,
+                  white_queen,
+                  white_kingside_bishop,
+                  white_queenside_bishop,
+                  white_kingside_knight,
+                  white_queenside_knight,
+                  white_kingside_rook,
+                  white_queenside_rook,
+                  white_pawn_a,
+                  white_pawn_b,
+                  white_pawn_c,
+                  white_pawn_d,
+                  white_pawn_e,
+                  white_pawn_f,
+                  white_pawn_g,
+                  white_pawn_h]
+        seed: ${env.seed}
+
+      - variation: object_color
+        name: recv_obj_color
+        enabled: False
+        targets: [chess_board_surface,
+                  chess_board_base_visual,
+                  black_squares,
+                  white_squares]
+        seed: ${env.seed}
+
+      - variation: object_texture
+        name: manip_obj_tex
+        enabled: False
+        targets: [white_king,
+                  white_queen,
+                  white_kingside_bishop,
+                  white_queenside_bishop,
+                  white_kingside_knight,
+                  white_queenside_knight,
+                  white_kingside_rook,
+                  white_queenside_rook,
+                  white_pawn_a,
+                  white_pawn_b,
+                  white_pawn_c,
+                  white_pawn_d,
+                  white_pawn_e,
+                  white_pawn_f,
+                  white_pawn_g,
+                  white_pawn_h]
+        uv_scale: [0.1, 0.1]
+        seed: ${env.seed}
+
+      - variation: object_size
+        name: manip_obj_size
+        enabled: False
+        targets: [black_king,
+                  black_queen,
+                  black_kingside_bishop,
+                  black_queenside_bishop,
+                  black_kingside_knight,
+                  black_queenside_knight,
+                  black_kingside_rook,
+                  black_queenside_rook,
+                  black_pawn_a,
+                  black_pawn_b,
+                  black_pawn_c,
+                  black_pawn_d,
+                  black_pawn_e,
+                  black_pawn_f,
+                  black_pawn_g,
+                  black_pawn_h,
+                  white_king,
+                  white_queen,
+                  white_kingside_bishop,
+                  white_queenside_bishop,
+                  white_kingside_knight,
+                  white_queenside_knight,
+                  white_kingside_rook,
+                  white_queenside_rook,
+                  white_pawn_a,
+                  white_pawn_b,
+                  white_pawn_c,
+                  white_pawn_d,
+                  white_pawn_e,
+                  white_pawn_f,
+                  white_pawn_g,
+                  white_pawn_h]
+        scale_range: [0.75, 1.25]
+        seed: ${env.seed}
+
+      - variation: light_color
+        enabled: False
+        targets: [DefaultLightA, DefaultLightB, DefaultLightD]
+        color_range: [[0.0, 0.0, 0.0], [0.5, 0.5, 0.5]]
+        seed: ${env.seed}
+
+      - variation: table_texture
+        enabled: False
+        seed: ${env.seed}
+
+      - variation: table_color
+        enabled: False
+        color_range: [[0.25, 0.25, 0.25], [1.0, 1.0, 1.0]]
+        seed: ${env.seed}
+
+      - variation: background_texture
+        enabled: False
+        seed: ${env.seed}
+
+      - variation: distractor_object
+        enabled: False
+        targets: [spawn_boundary0]
+        num_objects: 2
+        seed: ${env.seed}
+
+      - variation: distractor_object
+        enabled: False
+        targets: [spawn_boundary1]
+        num_objects: 2
+        seed: ${env.seed}
+
+      - variation: camera_pose
+        enabled: False
+        targets: [cam_front,
+                  cam_over_shoulder_left,
+                  cam_over_shoulder_right,
+                  cam_overhead]
+        euler_range: [[-0.05, -0.05, -0.05], [0.05, 0.05, 0.05]]
+        position_range: [[-0.1, -0.1, -0.1], [0.1, 0.1, 0.1]]
+        seed: ${env.seed}

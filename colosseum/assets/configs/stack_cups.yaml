@@ -1,0 +1,91 @@
+data:
+  # Where to save the demos
+  save_path: /tmp/rlbench_data/
+  # The size of the images to save
+  image_size: [512, 512]
+  # The renderer to use. Either opengl or opengl3. The first has no shadows
+  renderer: opengl3
+  # The number of episodes to collect per task
+  episodes_per_task: 20
+  # The image types that will be recorded
+  images:
+    rgb: True
+    depth: False
+    mask: False
+    point_cloud: True
+  # The cameras that we will be enabled
+  cameras:
+    left_shoulder: False
+    right_shoulder: False
+    overhead: False
+    wrist: False
+    front: True
+  # Store depth as 0 - 1
+  depth_in_meters: False
+  # We want to save the masks as rgb encodings.
+  masks_as_one_channel: False
+env:
+  task_name: "stack_cups"
+  seed: 42
+  scene:
+    factors:
+
+      - variation: object_color
+        name: manip_obj_color
+        enabled: False
+        targets: [cup1_visual,
+                  cup2_visual,
+                  cup3_visual]
+        seed: ${env.seed}
+
+      - variation: object_texture
+        name: manip_obj_tex
+        enabled: False
+        targets: [cup1_visual,
+                  cup2_visual,
+                  cup3_visual]
+        seed: ${env.seed}
+
+      - variation: object_size
+        name: manip_obj_size
+        enabled: False
+        targets: [cup1, cup2, cup3]
+        scale_range: [0.75, 1.25]
+        scale_same: True
+        seed: ${env.seed}
+
+      - variation: light_color
+        enabled: False
+        targets: [DefaultLightA, DefaultLightB, DefaultLightD]
+        color_range: [[0.0, 0.0, 0.0], [0.5, 0.5, 0.5]]
+        seed: ${env.seed}
+
+      - variation: table_texture
+        enabled: False
+        seed: ${env.seed}
+
+      - variation: table_color
+        enabled: False
+        color_range: [[0.25, 0.25, 0.25], [1.0, 1.0, 1.0]]
+        seed: ${env.seed}
+
+      - variation: background_texture
+        enabled: False
+        seed: ${env.seed}
+
+      - variation: distractor_object
+        enabled: False
+        targets: [spawn_boundary0]
+        num_objects: 1
+        shapes_to_handle: [cup1, cup2, cup3]
+        seed: ${env.seed}
+
+      - variation: camera_pose
+        enabled: False
+        targets: [cam_front,
+                  cam_over_shoulder_left,
+                  cam_over_shoulder_right,
+                  cam_overhead]
+        euler_range: [[-0.05, -0.05, -0.05], [0.05, 0.05, 0.05]]
+        position_range: [[-0.1, -0.1, -0.1], [0.1, 0.1, 0.1]]
+        seed: ${env.seed}
