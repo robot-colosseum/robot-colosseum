@@ -41,6 +41,7 @@ class DistractorObjectVariation(IVariation):
         obj_ttm_folder = safeGetValue(cfg, "objects_folder", "")
         obj_ttm_whitelist = safeGetValue(cfg, "objects_filenames", [])
         num_objs_to_spawn = safeGetValue(cfg, "num_objects", 1)
+        num_steps_to_wait = safeGetValue(cfg, "num_steps_wait", 0)
         shapes_to_handle = safeGetValue(cfg, "shapes_to_handle", [])
         seed = safeGetValue(cfg, "seed", None)
 
@@ -51,6 +52,7 @@ class DistractorObjectVariation(IVariation):
             obj_ttm_folder=obj_ttm_folder,
             obj_ttm_whitelist=obj_ttm_whitelist,
             num_objs_to_spawn=num_objs_to_spawn,
+            num_steps_to_wait=num_steps_to_wait,
             shapes_to_handle=shapes_to_handle,
             seed=seed,
         )
@@ -63,6 +65,7 @@ class DistractorObjectVariation(IVariation):
         obj_ttm_folder: str = ASSETS_MODELS_TTM_FOLDER,
         obj_ttm_whitelist: List[str] = [],
         num_objs_to_spawn: int = 1,
+        num_steps_to_wait: int = 0,
         shapes_to_handle: List[str] = [],
         seed: Optional[int] = None,
     ):
@@ -83,6 +86,8 @@ class DistractorObjectVariation(IVariation):
             A list of objects that can be used for this variation
         num_objs_to_spawn: int
             The number of objects to be spawned each time we use this variation
+        num_steps_to_wait: int
+            The number of steps to wait until the spawning process is executed
         shapes_to_handle: List[str]
             A list of object names to handle within the spawn boundary
         seed Optional[int]
@@ -93,6 +98,10 @@ class DistractorObjectVariation(IVariation):
         )
 
         self._num_objs_to_spawn: int = num_objs_to_spawn
+        self._num_steps_to_wait: int = num_steps_to_wait
+        self._num_steps_waiting: int = 0
+        self._waiting: bool = self._num_steps_to_wait > 0
+
         self._obj_ttm_folder: str = (
             obj_ttm_folder if obj_ttm_folder != "" else ASSETS_MODELS_TTM_FOLDER
         )
@@ -112,6 +121,8 @@ class DistractorObjectVariation(IVariation):
         self._spawn_boundary: Optional[SpawnBoundary] = None
 
         self._spawn_models: List[Optional[Object]] = []
+
+        self._ready: bool = False
 
         if len(self._targets) < 1:
             warnings.warn(
@@ -144,12 +155,30 @@ class DistractorObjectVariation(IVariation):
 
         boundaries = [boundary for _, boundary in self._targets.items()]
         self._spawn_boundary = SpawnBoundaryExt(boundaries)
+        self._ready = True
+
+    def on_init_episode(self) -> None:
+        if self._num_steps_to_wait < 1:
+            super().on_init_episode()
+        else:
+            self._waiting = self._num_steps_to_wait > 0
+            self._num_steps_waiting = 0
+
+    def on_step_episode(self) -> None:
+        if self._waiting:
+            self._num_steps_waiting += 1
+            if self._num_steps_waiting >= self._num_steps_to_wait:
+                self._waiting = False
+                self.randomize()
 
     def randomize(self) -> None:
         """
         Spawns a new object from the models folder into one of the selected
         spawn areas.
         """
+        if not self._ready:
+            return
+
         if self._spawn_boundary is None:
             return
 
