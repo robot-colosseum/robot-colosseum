@@ -88,7 +88,7 @@ class VariationsManager:
             if variation.enabled:
                 variation.on_init_episode()
 
-    def step(self) -> None:
+    def on_step_episode(self) -> None:
         for variation in self._variations:
             if variation.enabled:
                 variation.on_step_episode()
