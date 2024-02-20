@@ -1,14 +1,44 @@
+from __future__ import annotations
+
 from typing import Dict, List, Optional
 
 from numpy.typing import NDArray
+from omegaconf import DictConfig
 from pyrep import PyRep
 from pyrep.const import ObjectType
 
+from colosseum.variations.utils import safeGetValue
 from colosseum.variations.variation import IVariation
 
 
 class CameraPoseVariation(IVariation):
     """Camera pose variation, can change camera's pose in the simulation"""
+
+    VARIATION_ID = "camera_pose"
+
+    @staticmethod
+    def CreateFromConfig(
+        pyrep: PyRep,
+        name: Optional[str],
+        targets_names: List[str],
+        cfg: DictConfig,
+    ) -> CameraPoseVariation:
+        """
+        Factory function used to create a camera pose variation from a given
+        configuration coming from yaml through OmegaConf
+        """
+        euler_range = safeGetValue(cfg, "euler_range", [])
+        position_range = safeGetValue(cfg, "position_range", [])
+        seed = safeGetValue(cfg, "seed", None)
+
+        return CameraPoseVariation(
+            pyrep,
+            name,
+            targets_names,
+            euler_range=euler_range,
+            position_range=position_range,
+            seed=seed,
+        )
 
     def __init__(
         self,

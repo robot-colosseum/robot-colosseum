@@ -1,13 +1,16 @@
+from __future__ import annotations
+
 import warnings
 from typing import List, Optional, cast
 
 import numpy as np
 from numpy.typing import NDArray
+from omegaconf import DictConfig
 from pyrep import PyRep
 from pyrep.const import ObjectType
 from pyrep.objects.shape import Shape
 
-from colosseum.variations.utils import ColorConfigMode, sampleColor
+from colosseum.variations.utils import ColorCfgMode, safeGetValue, sampleColor
 from colosseum.variations.variation import IVariation
 
 DEFAULT_TABLE_NAME = "diningTable_visible"
@@ -15,6 +18,32 @@ DEFAULT_TABLE_NAME = "diningTable_visible"
 
 class TableColorVariation(IVariation):
     """Table color variation, can change tabletop's color in simulation"""
+
+    VARIATION_ID = "table_color"
+
+    @staticmethod
+    def CreateFromConfig(
+        pyrep: PyRep,
+        name: Optional[str],
+        cfg: DictConfig,
+    ) -> TableColorVariation:
+        """
+        Factory function used to create a table color variation from a given
+        configuration coming from yaml through OmegaConf
+        """
+        color_names = safeGetValue(cfg, "color_names", [])
+        color_list = safeGetValue(cfg, "color_list", [])
+        color_range = safeGetValue(cfg, "color_range", [])
+        seed = safeGetValue(cfg, "seed", None)
+
+        return TableColorVariation(
+            pyrep,
+            name,
+            color_names=color_names,
+            color_list=color_list,
+            color_range=color_range,
+            seed=seed,
+        )
 
     def __init__(
         self,
@@ -45,7 +74,7 @@ class TableColorVariation(IVariation):
             pyrep, name, ObjectType.SHAPE, [DEFAULT_TABLE_NAME], seed=seed
         )
 
-        self._config_mode = ColorConfigMode.USE_RANDOM_FROM_LIBRARY
+        self._config_mode = ColorCfgMode.USE_RANDOM_FROM_LIBRARY
         self._color_names = color_names
         self._color_list = color_list
         self._color_range = (
@@ -62,13 +91,13 @@ class TableColorVariation(IVariation):
             and len(color_list) < 1
             and len(color_range) < 1
         ):
-            self._config_mode = ColorConfigMode.USE_RANDOM_FROM_LIBRARY
+            self._config_mode = ColorCfgMode.USE_RANDOM_FROM_LIBRARY
         elif len(color_names) > 0:
-            self._config_mode = ColorConfigMode.USE_CUSTOM_COLOR_NAMES
+            self._config_mode = ColorCfgMode.USE_CUSTOM_COLOR_NAMES
         elif len(color_list) > 0:
-            self._config_mode = ColorConfigMode.USE_CUSTOM_COLOR_VALUES
+            self._config_mode = ColorCfgMode.USE_CUSTOM_COLOR_VALUES
         elif len(color_range) > 0:
-            self._config_mode = ColorConfigMode.USE_CUSTOM_COLOR_RANGE
+            self._config_mode = ColorCfgMode.USE_CUSTOM_COLOR_RANGE
 
     def randomize(self) -> None:
         color_value = sampleColor(

@@ -1,9 +1,12 @@
+from __future__ import annotations
+
 import os
 import re
 import warnings
 from typing import Dict, List, Optional, Set
 
 from numpy.typing import NDArray
+from omegaconf import DictConfig
 from pyrep import PyRep
 from pyrep.const import ObjectType
 from pyrep.objects.object import Object
@@ -13,10 +16,45 @@ from rlbench.backend.spawn_boundary import SpawnBoundary
 
 from colosseum import ASSETS_MODELS_TTM_FOLDER
 from colosseum.rlbench.extensions.spawn_boundary import SpawnBoundaryExt
+from colosseum.variations.utils import safeGetValue
 from colosseum.variations.variation import IVariation
 
 
 class DistractorObjectVariation(IVariation):
+    """
+    Distractor object variation, can spawn distractor objects in the simulation
+    """
+
+    VARIATION_ID = "distractor_object"
+
+    @staticmethod
+    def CreateFromConfig(
+        pyrep: PyRep,
+        name: Optional[str],
+        targets_names: List[str],
+        cfg: DictConfig,
+    ) -> DistractorObjectVariation:
+        """
+        Factory function used to create a distractor object variation from a
+        given configuration coming from yaml through OmegaConf
+        """
+        obj_ttm_folder = safeGetValue(cfg, "objects_folder", "")
+        obj_ttm_whitelist = safeGetValue(cfg, "objects_filenames", [])
+        num_objs_to_spawn = safeGetValue(cfg, "num_objects", 1)
+        shapes_to_handle = safeGetValue(cfg, "shapes_to_handle", [])
+        seed = safeGetValue(cfg, "seed", None)
+
+        return DistractorObjectVariation(
+            pyrep,
+            name,
+            targets_names,
+            obj_ttm_folder=obj_ttm_folder,
+            obj_ttm_whitelist=obj_ttm_whitelist,
+            num_objs_to_spawn=num_objs_to_spawn,
+            shapes_to_handle=shapes_to_handle,
+            seed=seed,
+        )
+
     def __init__(
         self,
         pyrep: PyRep,

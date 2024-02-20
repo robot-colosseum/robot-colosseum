@@ -1,15 +1,46 @@
+from __future__ import annotations
+
 from typing import List, Optional, cast
 
+from omegaconf import DictConfig
 from pyrep import PyRep
 from pyrep.const import ObjectType
 
 from colosseum.pyrep.extensions.shape import ShapeExt
-from colosseum.variations.utils import ScaleConfigMode, sampleScale
+from colosseum.variations.utils import ScaleCfgMode, safeGetValue, sampleScale
 from colosseum.variations.variation import IVariation
 
 
 class ObjectSizeVariation(IVariation):
     """Variation in charge of changing objects' scales in the simulation"""
+
+    VARIATION_ID = "object_size"
+
+    @staticmethod
+    def CreateFromConfig(
+        pyrep: PyRep,
+        name: Optional[str],
+        targets_names: List[str],
+        cfg: DictConfig,
+    ) -> ObjectSizeVariation:
+        """
+        Factory function used to create an object size variation from a given
+        configuration coming from yaml through OmegaConf
+        """
+        scale_list = safeGetValue(cfg, "scale_list", [])
+        scale_range = safeGetValue(cfg, "scale_range", [])
+        scale_same = safeGetValue(cfg, "scale_same", False)
+        seed = safeGetValue(cfg, "seed", None)
+
+        return ObjectSizeVariation(
+            pyrep,
+            name,
+            targets_names,
+            scale_range=scale_range,
+            scale_list=scale_list,
+            scale_same=scale_same,
+            seed=seed,
+        )
 
     def __init__(
         self,
@@ -45,7 +76,7 @@ class ObjectSizeVariation(IVariation):
             pyrep, name, ObjectType.SHAPE, targets_names, seed=seed
         )
 
-        self._config_mode = ScaleConfigMode.USE_DEFAULT_SCALE_RANGE
+        self._config_mode = ScaleCfgMode.USE_DEFAULT_SCALE_RANGE
         self._scale_list = scale_list
         self._scale_range = (
             (scale_range[0], scale_range[1])
@@ -55,11 +86,11 @@ class ObjectSizeVariation(IVariation):
         self._scale_same = scale_same
 
         if len(scale_list) < 1 and len(scale_range) < 1:
-            self._config_mode = ScaleConfigMode.USE_DEFAULT_SCALE_RANGE
+            self._config_mode = ScaleCfgMode.USE_DEFAULT_SCALE_RANGE
         elif len(scale_range) > 0:
-            self._config_mode = ScaleConfigMode.USE_CUSTOM_SCALE_RANGE
+            self._config_mode = ScaleCfgMode.USE_CUSTOM_SCALE_RANGE
         elif len(scale_list) > 0:
-            self._config_mode = ScaleConfigMode.USE_CUSTOM_SCALE_VALUES
+            self._config_mode = ScaleCfgMode.USE_CUSTOM_SCALE_VALUES
 
         for target_name, target_shape in self._targets.items():
             # Replace Shape with ShapeExt

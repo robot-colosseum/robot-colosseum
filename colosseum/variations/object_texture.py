@@ -1,17 +1,57 @@
+from __future__ import annotations
+
 import os
 import re
 from typing import Dict, List, Optional, Set, Tuple, cast
 
+from omegaconf import DictConfig
 from pyrep import PyRep
 from pyrep.const import ObjectType, TextureMappingMode
 
 from colosseum import ASSETS_TEXTURES_FOLDER
 from colosseum.pyrep.extensions.shape import ShapeExt
+from colosseum.variations.utils import safeGetValue
 from colosseum.variations.variation import IVariation
 
 
 class ObjectTextureVariation(IVariation):
     """Variation in charge of changing objects' textures in the simulation"""
+
+    VARIATION_ID = "object_texture"
+
+    @staticmethod
+    def CreateFromConfig(
+        pyrep: PyRep,
+        name: Optional[str],
+        targets_names: List[str],
+        cfg: DictConfig,
+    ) -> ObjectTextureVariation:
+        """
+        Factory function used to create an object texture variation from a given
+        configuration coming from yaml through OmegaConf
+        """
+        textures_folder = safeGetValue(cfg, "textures_folder", "")
+        textures_filenames = safeGetValue(cfg, "textures_filenames", [])
+        repeat_along_u = safeGetValue(cfg, "repeat_along_u", True)
+        repeat_along_v = safeGetValue(cfg, "repeat_along_v", True)
+        uv_scale = safeGetValue(cfg, "uv_scale", (1.0, 1.0))
+        mapping_mode = TextureMappingMode(
+            safeGetValue(cfg, "mapping_mode", TextureMappingMode.PLANE.value)
+        )
+        seed = safeGetValue(cfg, "seed", None)
+
+        return ObjectTextureVariation(
+            pyrep,
+            name,
+            targets_names,
+            textures_folder=textures_folder,
+            textures_filenames=textures_filenames,
+            repeat_along_u=repeat_along_u,
+            repeat_along_v=repeat_along_v,
+            uv_scale=uv_scale,
+            mapping_mode=mapping_mode,
+            seed=seed,
+        )
 
     def __init__(
         self,

@@ -9,7 +9,7 @@ from omegaconf import DictConfig
 from colosseum.variations.const import COLORS_MAP, COLORS_NAMES
 
 
-class ColorConfigMode(Enum):
+class ColorCfgMode(Enum):
     # Pick from a fixed set of color values from colosseum.variations.const
     USE_RANDOM_FROM_LIBRARY = 0
     # Similar to the previous one, but use only the names that the user provides
@@ -21,7 +21,7 @@ class ColorConfigMode(Enum):
 
 
 def sampleColor(
-    mode: ColorConfigMode,
+    mode: ColorCfgMode,
     rng: np.random.Generator,
     color_names: List[str] = [],
     color_list: List[NDArray] = [],
@@ -32,7 +32,7 @@ def sampleColor(
 
     Parameters
     ----------
-        mode: ColorConfigMode
+        mode: ColorCfgMode
             The mode that will be used to sample colors
         rng: np.random.Generator
             The random generator used to make the sampling process
@@ -53,9 +53,9 @@ def sampleColor(
             went wrong during the sampling process
     """
     color_value: Optional[NDArray] = None
-    if mode == ColorConfigMode.USE_RANDOM_FROM_LIBRARY:
+    if mode == ColorCfgMode.USE_RANDOM_FROM_LIBRARY:
         color_value = COLORS_MAP[rng.choice(COLORS_NAMES)]
-    elif mode == ColorConfigMode.USE_CUSTOM_COLOR_NAMES:
+    elif mode == ColorCfgMode.USE_CUSTOM_COLOR_NAMES:
         assert len(color_names) > 0, "Not enough color names provided"
         color_name = rng.choice(color_names)
         if color_name not in COLORS_MAP:
@@ -67,10 +67,10 @@ def sampleColor(
             )
         else:
             color_value = COLORS_MAP[color_name]
-    elif mode == ColorConfigMode.USE_CUSTOM_COLOR_VALUES:
+    elif mode == ColorCfgMode.USE_CUSTOM_COLOR_VALUES:
         assert len(color_list) > 0, "Not enough colors provided in list"
         color_value = rng.choice(color_list)
-    elif mode == ColorConfigMode.USE_CUSTOM_COLOR_RANGE:
+    elif mode == ColorCfgMode.USE_CUSTOM_COLOR_RANGE:
         assert len(color_range) == 2, "Color range must be in format (low,high)"
         try:
             color_value = rng.uniform(low=color_range[0], high=color_range[1])
@@ -83,7 +83,7 @@ def sampleColor(
     return color_value
 
 
-class ScaleConfigMode(Enum):
+class ScaleCfgMode(Enum):
     # Sample a random value from the standard uniform distribution
     USE_DEFAULT_SCALE_RANGE = 0
     # Sample a random value within a custom range
@@ -93,7 +93,7 @@ class ScaleConfigMode(Enum):
 
 
 def sampleScale(
-    mode: ScaleConfigMode,
+    mode: ScaleCfgMode,
     rng: np.random.Generator,
     scale_range: Tuple[float, float] = (0.75, 1.25),
     scale_list: List[float] = [],
@@ -103,7 +103,7 @@ def sampleScale(
 
     Parameters
     ----------
-        mode: ScaleConfigMode
+        mode: ScaleCfgMode
             The mode that will be used to sample scale values
         rng: np.random.Generator
             The random generator used to make the sampling process
@@ -121,9 +121,9 @@ def sampleScale(
             something went wrong during the sampling process
     """
     scale_value: Optional[float] = None
-    if mode == ScaleConfigMode.USE_DEFAULT_SCALE_RANGE:
+    if mode == ScaleCfgMode.USE_DEFAULT_SCALE_RANGE:
         scale_value = rng.uniform(0.0, 1.0)
-    elif mode == ScaleConfigMode.USE_CUSTOM_SCALE_RANGE:
+    elif mode == ScaleCfgMode.USE_CUSTOM_SCALE_RANGE:
         assert len(scale_range) == 2, "Scale range must be in format (low,high)"
         try:
             scale_value = rng.uniform(low=scale_range[0], high=scale_range[1])
@@ -132,7 +132,7 @@ def sampleScale(
                 "Something went wrong while using the"
                 + f" given scale ranges. Range is '{scale_range}'"
             )
-    elif mode == ScaleConfigMode.USE_CUSTOM_SCALE_VALUES:
+    elif mode == ScaleCfgMode.USE_CUSTOM_SCALE_VALUES:
         assert len(scale_list) > 0, "Not enough scales provided in list"
         scale_value = rng.choice(scale_list)
 

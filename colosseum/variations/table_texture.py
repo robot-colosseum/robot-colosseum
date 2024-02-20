@@ -1,13 +1,17 @@
+from __future__ import annotations
+
 import os
 import re
 from typing import Dict, List, Optional, Set, Tuple, cast
 
+from omegaconf import DictConfig
 from pyrep import PyRep
 from pyrep.const import ObjectType, TextureMappingMode
 from pyrep.objects.shape import Shape
 from pyrep.textures.texture import Texture
 
 from colosseum import ASSETS_TEXTURES_FOLDER
+from colosseum.variations.utils import safeGetValue
 from colosseum.variations.variation import IVariation
 
 DEFAULT_TABLE_NAME = "diningTable_visible"
@@ -24,6 +28,30 @@ class TableTextureVariation(IVariation):
     """
     Table texture variation, can change the tabletop texture in the simulation
     """
+
+    VARIATION_ID = "table_texture"
+
+    @staticmethod
+    def CreateFromConfig(
+        pyrep: PyRep, name: Optional[str], cfg: DictConfig
+    ) -> TableTextureVariation:
+        """
+        Factory function used to create a table texture variation from a given
+        configuration coming from yaml through OmegaConf
+        """
+        textures_folder = safeGetValue(cfg, "textures_folder", "")
+        textures_filenames = safeGetValue(cfg, "textures_filenames", [])
+        uv_scale = safeGetValue(cfg, "uv_scale", (1.0, 1.0))
+        seed = safeGetValue(cfg, "seed", None)
+
+        return TableTextureVariation(
+            pyrep,
+            name,
+            textures_folder=textures_folder,
+            textures_filenames=textures_filenames,
+            uv_scale=uv_scale,
+            seed=seed,
+        )
 
     def __init__(
         self,
