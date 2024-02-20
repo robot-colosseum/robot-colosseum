@@ -117,4 +117,4 @@ class SceneExt(Scene):
     def step(self):
         super().step()
 
-        self._var_manager.on_init_episode()
+        self._var_manager.on_step_episode()

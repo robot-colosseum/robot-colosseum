@@ -98,7 +98,8 @@ class IVariation(abc.ABC):
         """
         Called when the episode is initialized
         """
-        pass
+        if self._enabled:
+            self.randomize()
 
     def on_step_episode(self) -> None:
         """
