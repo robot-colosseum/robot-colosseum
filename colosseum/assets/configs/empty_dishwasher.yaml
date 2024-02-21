@@ -2,7 +2,7 @@ data:
   # Where to save the demos
   save_path: /tmp/rlbench_data/
   # The size of the images to save
-  image_size: [512, 512]
+  image_size: [128, 128]
   # The renderer to use. Either opengl or opengl3. The first has no shadows
   renderer: opengl3
   # The number of episodes to collect per task
@@ -97,8 +97,7 @@ env:
         enabled: False
         targets: [cam_front,
                   cam_over_shoulder_left,
-                  cam_over_shoulder_right,
-                  cam_overhead]
+                  cam_over_shoulder_right]
         euler_range: [[-0.05, -0.05, -0.05], [0.05, 0.05, 0.05]]
         position_range: [[-0.1, -0.1, -0.1], [0.1, 0.1, 0.1]]
         seed: ${env.seed}
