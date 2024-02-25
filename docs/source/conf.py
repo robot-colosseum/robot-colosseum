@@ -41,4 +41,9 @@ redirects = {"index": "overview.html"}
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "furo"
+html_title = "Colosseum Documentation"
+html_logo = "_static/img_emoji_rss.png"
 html_static_path = ["_static"]
+
+pygments_style = "default"
+pygments_dark_style = "monokai"
