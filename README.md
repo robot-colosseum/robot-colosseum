@@ -17,9 +17,15 @@
 </p>
 
 This repository contains the implementation of the benchmark mentioned in the
-title. It also contains an example integration with `RVT`, one of the baselines
-from the study. The code for the benchmark builds on top of [PyRep][0], and
-integrates with [RLBench][1], implementing 20 out of the original 100 tasks.
+title. The code for the benchmark builds on top of [PyRep][0], and integrates
+with [RLBench][1], implementing 20 out of the original 100 tasks.
+
+
+<p align="center">
+  <b> 🚧 REPOSITORY UNDER DEVELOPMENT 🚧 </b>
+  <br>We're migrating our codebase to this repository and adding documentation
+  for the usage of the benchmark. We'll make a public release once we're done.
+</p>
 
 ## Citation
 

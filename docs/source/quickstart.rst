@@ -62,6 +62,9 @@ task ``close_box``:
   given task. It contains the wiring of objects, sensors, and conditiions for
   the task to be successfull.
 
+- ``close_box.json``: This file is related to ``Colosseum``, and we'll discuss
+  more about it when we start using the data collection scripts.
+
 - ``close_box.yaml``: This file is related to ``Colosseum``, and it's used to
   configure variations for the associated task. We'll show the ``env`` section
   of the ``yaml`` file to discuss how we can enable and use these variations.
