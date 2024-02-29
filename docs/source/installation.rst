@@ -4,13 +4,13 @@ Installation
 1. Setup locally
 -----------------
 
-``RLBench_ext`` depends on both `PyRep`_ and `RLBench`_ to work correctly.
+``Colosseum`` depends on both `PyRep`_ and `RLBench`_ to work correctly.
 Please refer to their installation guides for more information. We repeat the
 setup steps here for convenience. Notice that both PyRep and RLBench use
 CoppeliaSim as simulator (former V-rep). Moreover, they use version ``4.1``,
 which is an old one, and targets old versions of Ubuntu.
 
-.. warning:: Even though the version of CoppeliaSim targets an old version of
+.. note:: Even though the version of CoppeliaSim targets an old version of
    Ubuntu, we have tested it on different OS versions and different OSs, and
    in most cases should work just fine.
 
@@ -116,7 +116,7 @@ steps and you should be good to go:
 
    $ cd $WORKSPACE
    $ . venv/bin/activate
-   (venv) $ git clone https://github.com/wpumacay/rlbench_ext.git && cd rlbench_ext
+   (venv) $ git clone https://github.com/robot-colosseum/robot-colosseum.git && cd robot-colosseum
    (venv) $ pip install -r requirements.txt
    (venv) $ pip install -e . # Install in developer mode
 
@@ -129,8 +129,8 @@ by using the example visualizer:
 
 .. code-block:: bash
 
-   (venv) $ cd $WORKSPACE/rlbench_ext
-   (venv) $ python -m rlbench_ext.tools.visualize_task --config-name hockey
+   (venv) $ cd $WORKSPACE/robot-colosseum
+   (venv) $ python -m colosseum.tools.visualize_task --config-name hockey
 
 .. image:: /_static/gif_example_own_repo_working.gif
    :width: 100%
@@ -149,8 +149,8 @@ everything ready for collecting demos.
 
 .. code-block:: bash
 
-   $ cd $WORKSPACE/rlbench_ext
-   $ docker build -t rlbench_ext:mesa -f Dockerfile_mesa .
+   $ cd $WORKSPACE/robot-colosseum
+   $ docker build -t colosseum:mesa -f Dockerfile_mesa .
 
 
 Spawn a container using this image for data collection as follows:
@@ -158,7 +158,7 @@ Spawn a container using this image for data collection as follows:
 .. code-block:: bash
 
    $ docker run -e DISPLAY -v $HOME/.Xauthority:/home/randuser/.Xauthority \
-     --net=host -it --rm rlbench_ext:mesa bash
+     --net=host -it --rm colosseum:mesa bash
 
 
 Once the container is running, refer to the quickstart section for info on how
@@ -171,8 +171,8 @@ to collect data and visualize tasks.
 
 .. code-block:: bash
 
-   $ cd $WORKSPACE/rlbench_ext
-   $ docker build -t rlbench_ext:nvidia -f Dockerfile_nvidia .
+   $ cd $WORKSPACE/robot-colosseum
+   $ docker build -t colosseum:nvidia -f Dockerfile_nvidia .
 
 Spawn a container using this image for data collection as follows:
 
@@ -180,14 +180,14 @@ Spawn a container using this image for data collection as follows:
 
    docker run --runtime=nvidia --gpus all -e DISPLAY -it --rm \
      -v $HOME/.Xauthority:/home/randuser/.Xauthority \
-     -v /tmp/.X11-unix:/tmp/.X11-unix --net=host rlbench_ext:nvidia bash
+     -v /tmp/.X11-unix:/tmp/.X11-unix --net=host colosseum:nvidia bash
 
 
 .. _PyRep: https://github.com/stepjam/PyRep
 .. _RLBench: https://github.com/stepjam/RLBench
 .. _RLBench fork: https://github.com/MohitShridhar/RLBench/tree/peract
-.. _Ubuntu 16.04 Link: https://www.coppeliarobotics.com/files/V4_1_0/CoppeliaSim_Edu_V4_1_0_Ubuntu16_04.tar.xz
-.. _Ubuntu 18.04 Link: https://www.coppeliarobotics.com/files/V4_1_0/CoppeliaSim_Edu_V4_1_0_Ubuntu18_04.tar.xz
-.. _Ubuntu 20.04 Link: https://www.coppeliarobotics.com/files/V4_1_0/CoppeliaSim_Edu_V4_1_0_Ubuntu20_04.tar.xz
+.. _Ubuntu 16.04 Link: https://downloads.coppeliarobotics.com/V4_1_0/CoppeliaSim_Edu_V4_1_0_Ubuntu16_04.tar.xz
+.. _Ubuntu 18.04 Link: https://downloads.coppeliarobotics.com/V4_1_0/CoppeliaSim_Edu_V4_1_0_Ubuntu18_04.tar.xz
+.. _Ubuntu 20.04 Link: https://downloads.coppeliarobotics.com/V4_1_0/CoppeliaSim_Edu_V4_1_0_Ubuntu20_04.tar.xz
 .. _PerAct: https://github.com/peract/peract
 .. _NVIDIA Container Toolkit: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
