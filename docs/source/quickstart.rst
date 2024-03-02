@@ -191,3 +191,147 @@ motion planner failed at the task, and continued with another episode.
 
    Visualizing the task ``close_box`` with the variation ``MO_Color`` enabled and
    with some modifications.
+
+2. Collect demonstrations
+--------------------------------
+Colosseum comes with some scripts that will help us collect demonstrations from
+the tasks. We'll start by using the simpler script.
+
+2.1 Collecting demonstrations for current ``yaml`` config
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+The ``collect_demo.py`` script can be used to collect demonstrations from a single
+task according to the current configuration of its associated ``yaml`` file. Let's
+collect some demonstrations from the ``open_drawer`` task.
+
+.. code-block:: bash
+
+   python -m colosseum.tools.collect_demo --config-name open_drawer
+
+Similarly, we could use the console script ``collect_demo`` as follows:
+
+.. code-block:: bash
+
+   collect_demo --config-name open_drawer
+
+If everything went well, you should see the following output in your terminal:
+
+.. figure:: /_static/img_collecting_demos_1.png
+   :width: 80%
+   :align: center
+
+   Output of the ``collect_demo`` script.
+
+We should get also our demonstrations in the ``/tmp/rlbench_data`` folder.
+
+.. figure:: /_static/img_collecting_demos_2.png
+   :width: 100%
+   :align: center
+
+   Demonstrations collected for the task ``open_drawer``.
+
+Note that we got **5** demonstrations for only the **front rgb** camera. These
+settings come from the ``yaml`` file itself, from the ``data`` section of the
+file, shown below:
+
+.. code-block:: yaml
+
+   data:
+     # Where to save the demos
+     save_path: /tmp/rlbench_data/
+     # The size of the images to save
+     image_size: [128, 128]
+     # The renderer to use. Either opengl or opengl3. The first has no shadows
+     renderer: opengl3
+     # The number of episodes to collect per task
+     episodes_per_task: 5
+     # The image types that will be recorded
+     images:
+       rgb: True
+       depth: False
+       mask: False
+       point_cloud: True
+     # The cameras that we will be enabled
+     cameras:
+       left_shoulder: False
+       right_shoulder: False
+       overhead: False
+       wrist: False
+       front: True
+     # Store depth as 0 - 1
+     depth_in_meters: False
+     # We want to save the masks as rgb encodings.
+     masks_as_one_channel: False
+
+To visually check that we are using indeed those settings (e.g. image size), we
+can generate a video from the demonstration using ``ffmpeg``. Navigate to the
+folder for one demonstration (where all the image files are located) and run this
+command to generate a video:
+
+.. code-block:: bash
+
+   ffmpeg -framerate 30 -i %d.png -c:v libx264 -pix_fmt yuv420p video_open_drawer.mp4
+
+The resulting video is shown below:
+
+.. raw:: html
+
+    <div style="text-align: center;">
+      <iframe width="512" height="512" src="/_static/video_open_drawer_1.mp4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+In the data section of the ``yaml`` file we can change various options like the
+number of demonstrations to collect, from which cameras we should collect observations,
+and which type of information can be collected. Let's modify the image size to
+``[512, 512]``, collect 10 demonstrations instead of 5, and collect also from the
+other available cameras. The resulting ``yaml`` should look something like this:
+
+.. code-block:: yaml
+
+   data:
+     # Where to save the demos
+     save_path: ${oc.env:HOME}/dataset/rlbench_data
+     # The size of the images to save
+     image_size: [512, 512]
+     # The renderer to use. Either opengl or opengl3. The first has no shadows
+     renderer: opengl3
+     # The number of episodes to collect per task
+     episodes_per_task: 10
+     # The image types that will be recorded
+     images:
+       rgb: True
+       depth: False
+       mask: False
+       point_cloud: True
+     # The cameras that we will be enabled
+     cameras:
+       left_shoulder: True
+       right_shoulder: True
+       overhead: True
+       wrist: True
+       front: True
+     # Store depth as 0 - 1
+     depth_in_meters: False
+     # We want to save the masks as rgb encodings.
+     masks_as_one_channel: False
+
+If everything went well, we should see the following output in our terminal:
+
+.. figure:: /_static/img_collecting_demos_3.png
+   :width: 80%
+   :align: center
+
+   Output of the ``collect_demo`` script after modifying the ``yaml`` file.
+
+Again, we can go to the folder of one of the demonstrations and generate a video
+using ``ffmpeg``, as follows:
+
+.. code-block:: bash
+
+   ffmpeg -framerate 30 -i %d.png -c:v libx264 -pix_fmt yuv420p video_open_drawer.mp4
+
+.. raw:: html
+
+    <div style="text-align: center;">
+      <iframe width="512" height="512" src="/_static/video_open_drawer_2.mp4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
