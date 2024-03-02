@@ -277,7 +277,9 @@ The resulting video is shown below:
 .. raw:: html
 
     <div style="text-align: center;">
-      <iframe width="512" height="512" src="/_static/video_open_drawer_1.mp4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <video autoplay muted loop width="512" height="512">
+         <source src="_static/video_open_drawer_1.mp4" type="video/mp4">
+      </video>
     </div>
 
 In the data section of the ``yaml`` file we can change various options like the
@@ -333,5 +335,15 @@ using ``ffmpeg``, as follows:
 .. raw:: html
 
     <div style="text-align: center;">
-      <iframe width="512" height="512" src="/_static/video_open_drawer_2.mp4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <video autoplay muted loop width="512" height="512">
+         <source src="_static/video_open_drawer_2.mp4" type="video/mp4">
+      </video>
     </div>
+
+
+You can use this data collection script to collect very specific demonstrations.
+As you could notice, we haven't activated variations yet when collecting demos.
+
+
+2.2 Collecting demonstrations for all variations
++++++++++++++++++++++++++++++++++++++++++++++++++
