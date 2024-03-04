@@ -347,3 +347,232 @@ As you could notice, we haven't activated variations yet when collecting demos.
 
 2.2 Collecting demonstrations for all variations
 +++++++++++++++++++++++++++++++++++++++++++++++++
+
+So far we have collected demonstrations from a single task, and we showed how to
+enable variations for that task via its associated config file. We could just
+use these mechanisms to start collecting demonstrations for all variations; the
+only problem is that it would be very tedious and time consuming to change the
+variation settings each time we want to collect demonstrations for different
+variations settings. We have partially automated that process by providing two
+scripts that you can use to collect demonstrations from all variations active
+one by one. First, we have to show you the **Benchmark Spreadsheet** where you
+will be able to see all tasks variations and which ones are not supported for
+the moment.
+
+.. figure:: /_static/img_benchmark_spreadsheet.png
+   :target: https://docs.google.com/spreadsheets/d/175cCG9qHzNB6axSno6K2NjQ9gjpbCqNK9GCi-SAQkCM/edit?usp=sharing
+   :width: 100%
+   :align: center
+
+   The Benchmark Spreadsheet.
+
+This spreadsheet is located at the root of the repo, and called ``colosseum_tasks_distribution.xlsx``.
+There you can find all the tasks available and their corresponding variations which,
+as you can see by the colors, not always are supported for all tasks. The colors
+mean the following:
+
+- ``Blank``: The variation is supported without any issues
+- ``Gray``: The variation does not apply for that specific case (e.g. no Receiving Object)
+- ``Red``: The variation should be applicable, but it's currently not supported.
+
+Notice also that the variations factors are indexed by and ``idx`` number, which
+uniquely identifies it among all variation factors. For example, note that the
+``MO_Color`` has index ``idx=2``, whereas ``camera_pose`` has index ``idx=14``. We
+make use of these indices to activate and deactivate variations accordingly. So,
+with this information we chose the option of using ``.json`` files for each task,
+and in each one we enable or disable variations accordingly. Let's take a look at
+a section of the ``json`` file associated for the ``open_drawer`` task.
+
+.. code-block:: json
+
+   {
+    "strategy": [
+        {
+            "spreadsheet_idx": 0,
+            "variation_name" : "no_variations",
+            "enabled": true,
+            "variations": [
+                {"type": "object_color", "name": "manip_obj_color", "enabled": false},
+                {"type": "object_color", "name": "recv_obj_color", "enabled": false},
+                {"type": "object_texture", "name": "manip_obj_tex", "enabled": false},
+                {"type": "object_texture", "name": "recv_obj_tex", "enabled": false},
+                {"type": "object_size", "name": "manip_obj_size", "enabled": false},
+                {"type": "object_size", "name": "recv_obj_size", "enabled": false},
+                {"type": "light_color", "name": "any", "enabled": false},
+                {"type": "table_color", "name": "any", "enabled": false},
+                {"type": "table_texture", "name": "any", "enabled": false},
+                {"type": "distractor_object", "name": "any", "enabled": false},
+                {"type": "background_texture", "name": "any", "enabled": false},
+                {"type": "camera_pose", "name": "any", "enabled": false}
+            ]
+        },
+        {
+            "spreadsheet_idx": 1,
+            "variation_name" : "all_mixed",
+            "enabled": true,
+            "variations": [
+                {"type": "object_color", "name": "manip_obj_color", "enabled": true},
+                {"type": "object_color", "name": "recv_obj_color", "enabled": true},
+                {"type": "object_texture", "name": "manip_obj_tex", "enabled": true},
+                {"type": "object_texture", "name": "recv_obj_tex", "enabled": true},
+                {"type": "object_size", "name": "manip_obj_size", "enabled": true},
+                {"type": "object_size", "name": "recv_obj_size", "enabled": true},
+                {"type": "light_color", "name": "any", "enabled": true},
+                {"type": "table_color", "name": "any", "enabled": true},
+                {"type": "table_texture", "name": "any", "enabled": true},
+                {"type": "distractor_object", "name": "any", "enabled": true},
+                {"type": "background_texture", "name": "any", "enabled": true},
+                {"type": "camera_pose", "name": "any", "enabled": true}
+            ]
+        },
+        {
+            "spreadsheet_idx": 2,
+            "variation_name" : "manip_obj_color",
+            "enabled": true,
+            "variations": [
+                {"type": "object_color", "name": "manip_obj_color", "enabled": true},
+                {"type": "object_color", "name": "recv_obj_color", "enabled": false},
+                {"type": "object_texture", "name": "manip_obj_tex", "enabled": false},
+                {"type": "object_texture", "name": "recv_obj_tex", "enabled": false},
+                {"type": "object_size", "name": "manip_obj_size", "enabled": false},
+                {"type": "object_size", "name": "recv_obj_size", "enabled": false},
+                {"type": "light_color", "name": "any", "enabled": false},
+                {"type": "table_color", "name": "any", "enabled": false},
+                {"type": "table_texture", "name": "any", "enabled": false},
+                {"type": "distractor_object", "name": "any", "enabled": false},
+                {"type": "background_texture", "name": "any", "enabled": false},
+                {"type": "camera_pose", "name": "any", "enabled": false}
+            ]
+        },
+        {
+            "spreadsheet_idx": 3,
+            "variation_name" : "recv_obj_color",
+            "enabled": false,
+            "variations": [
+                {"type": "object_color", "name": "manip_obj_color", "enabled": false},
+                {"type": "object_color", "name": "recv_obj_color", "enabled": true},
+                {"type": "object_texture", "name": "manip_obj_tex", "enabled": false},
+                {"type": "object_texture", "name": "recv_obj_tex", "enabled": false},
+                {"type": "object_size", "name": "manip_obj_size", "enabled": false},
+                {"type": "object_size", "name": "recv_obj_size", "enabled": false},
+                {"type": "light_color", "name": "any", "enabled": false},
+                {"type": "table_color", "name": "any", "enabled": false},
+                {"type": "table_texture", "name": "any", "enabled": false},
+                {"type": "distractor_object", "name": "any", "enabled": false},
+                {"type": "background_texture", "name": "any", "enabled": false},
+                {"type": "camera_pose", "name": "any", "enabled": false}
+            ]
+        },
+        {
+            "spreadsheet_idx": 4,
+            "variation_name" : "manip_obj_tex",
+            "enabled": false,
+            "variations": [
+                {"type": "object_color", "name": "manip_obj_color", "enabled": false},
+                {"type": "object_color", "name": "recv_obj_color", "enabled": false},
+                {"type": "object_texture", "name": "manip_obj_tex", "enabled": true},
+                {"type": "object_texture", "name": "recv_obj_tex", "enabled": false},
+                {"type": "object_size", "name": "manip_obj_size", "enabled": false},
+                {"type": "object_size", "name": "recv_obj_size", "enabled": false},
+                {"type": "light_color", "name": "any", "enabled": false},
+                {"type": "table_color", "name": "any", "enabled": false},
+                {"type": "table_texture", "name": "any", "enabled": false},
+                {"type": "distractor_object", "name": "any", "enabled": false},
+                {"type": "background_texture", "name": "any", "enabled": false},
+                {"type": "camera_pose", "name": "any", "enabled": false}
+            ]
+        },
+
+Each group in this data collection config corresponds to a different ``idx``, which
+represents a specific variation, or could represent a specific set of conditions, like
+``idx=0``, which corresponds to the no-variations case. For completeness we list
+all currently available ``idx`` values:
+
++-----------------+------------------------------------------------------------+
+| Index ``idx``   | Associated variation or configuration                      |
++=================+============================================================+
+| ``idx=0``       | No variation factors are enabled                           |
++-----------------+------------------------------------------------------------+
+| ``idx=1``       | All ``Colosseum`` variation factors are enabled            |
++-----------------+------------------------------------------------------------+
+| ``idx=2``       | ``MO_Color`` is enabled                                    |
++-----------------+------------------------------------------------------------+
+| ``idx=3``       | ``RO_Color`` is enabled                                    |
++-----------------+------------------------------------------------------------+
+| ``idx=4``       | ``MO_Texture`` is enabled                                  |
++-----------------+------------------------------------------------------------+
+| ``idx=5``       | ``RO_Texture`` is enabled                                  |
++-----------------+------------------------------------------------------------+
+| ``idx=6``       | ``MO_Size`` is enabled                                     |
++-----------------+------------------------------------------------------------+
+| ``idx=7``       | ``RO_Size`` is enabled                                     |
++-----------------+------------------------------------------------------------+
+| ``idx=8``       | ``Light_Color`` is enabled                                 |
++-----------------+------------------------------------------------------------+
+| ``idx=9``       | ``Table_Color`` is enabled                                 |
++-----------------+------------------------------------------------------------+
+| ``idx=10``      | ``Table_Texture`` is enabled                               |
++-----------------+------------------------------------------------------------+
+| ``idx=11``      | ``Distractor_Objects`` is enabled                          |
++-----------------+------------------------------------------------------------+
+| ``idx=12``      | ``Background_Texture`` is enabled                          |
++-----------------+------------------------------------------------------------+
+| ``idx=13``      | ``RLBench`` associated variations per task are enabled     |
++-----------------+------------------------------------------------------------+
+| ``idx=14``      | ``Camera_Pose`` is enabled                                 |
++-----------------+------------------------------------------------------------+
+| ``idx=15``      | Both ``RLBench`` and ``Colosseum`` variations are enabled  |
++-----------------+------------------------------------------------------------+
+
+The script that makes use of this information is the modified ``dataset_generator.py``
+file, which you can locate at ``colosseum.tools.dataset_generator``. This script
+accepts a task as input and collect for that task all configured variations in its
+corresponding ``json`` file. So for some tasks it will collect all 16 ``idxs``,
+whereas for others were some variations don't apply or are not supported it will
+collect a fewer number of variations. Note that the script will be in charge of
+enabling and disabling variations according to the ``json`` file, so we don't have
+to do so manually in the ``yaml`` file. Below we show how to call this script for
+the task ``open_drawer``.
+
+.. code-block:: bash
+
+   python -m colosseum.tools.dataset_generator --config-name open_drawer
+
+Or using the console script:
+
+.. code-block:: bash
+
+   dataset_generator --config-name open_drawer
+
+This leads to the final script that we'll discuss in this section, the ``collect_dataset.sh``
+script. It's just a bash script that calls the previous script every time for all
+tasks.
+
+.. code-block:: bash
+
+   ./collect_dataset.sh
+
+This script has some properties exposed, which we show below:
+
+.. code-block:: bash
+
+   # idx from which to collect demos (use -1 for all idxs)
+   IDX_TO_COLLECT=-1
+
+   SAVE_PATH=$HOME/data/colosseum_dataset
+   NUMBER_OF_EPISODES=1
+   IMAGE_SIZE=(128 128)
+   MAX_ATTEMPTS=20
+   SEED=42
+   USE_SAVE_STATES="True"
+
+   IMAGES_USE_RGB="True"
+   IMAGES_USE_DEPTH="True"
+   IMAGES_USE_MASK="False"
+   IMAGES_USE_POINTCLOUD="False"
+
+   CAMERAS_USE_LEFT_SHOULDER="True"
+   CAMERAS_USE_RIGHT_SHOULDER="True"
+   CAMERAS_USE_OVERHEAD="False"
+   CAMERAS_USE_WRIST="True"
+   CAMERAS_USE_FRONT="True"
