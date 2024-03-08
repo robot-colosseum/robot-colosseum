@@ -7,6 +7,19 @@ Overview
 
    Perturbations applied to various tasks from the benchmark.
 
+.. image:: https://img.shields.io/badge/ProjectPage-blue
+   :alt: Project Page
+   :target: https://robot-colosseum.github.io
+
+.. image:: https://img.shields.io/badge/Project-Repo-Blue
+   :alt: Project Repo
+   :target: https://github.com/robot-colosseum/robot-colosseum
+
+.. image:: https://img.shields.io/badge/paper-arXiv-blue
+   :alt: Paper
+   :target: https://arxiv.org/abs/2402.08191
+
+
 Introduction
 ------------
 
