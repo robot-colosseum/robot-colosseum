@@ -20,6 +20,8 @@ This repository contains the implementation of the benchmark mentioned in the
 title. The code for the benchmark builds on top of [PyRep][0], and integrates
 with [RLBench][1], implementing 20 out of the original 100 tasks.
 
+Documentation can be found [here][8]
+
 
 <p align="center">
   <b> 🚧 REPOSITORY UNDER DEVELOPMENT 🚧 </b>
@@ -34,7 +36,7 @@ with [RLBench][1], implementing 20 out of the original 100 tasks.
   title     = {THE COLOSSEUM: A Benchmark for Evaluating Generalization for Robotic Manipulation},
   author    = {Pumacay, Wilbert and Singh, Ishika and Duan, Jiafei and Krishna, Ranjay and Thomason, Jesse and Fox, Dieter},
   booktitle = {arXiv preprint arXiv:2402.08191},
-  year      = {2023},
+  year      = {2024},
 }
 ```
 
@@ -47,3 +49,4 @@ with [RLBench][1], implementing 20 out of the original 100 tasks.
 [5]: <https://ranjaykrishna.com/index.html> (ranjay-site)
 [6]: <https://jessethomason.com> (jesse-site)
 [7]: <https://homes.cs.washington.edu/~fox> (dieter-site)
+[8]: <https://robot-colosseum.readthedocs.io/en/latest/overview.html> (docs-site)
