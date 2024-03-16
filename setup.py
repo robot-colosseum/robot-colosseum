@@ -7,6 +7,7 @@ setup(
             "assets/textures/*.jpg",
             "assets/textures/*.png",
             "assets/models/*.ttm",
+            "assets/configs/*.yaml",
         ],
     },
     entry_points={
