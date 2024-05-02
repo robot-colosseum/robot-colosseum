@@ -10,20 +10,20 @@ data:
   # The image types that will be recorded
   images:
     rgb: True
-    depth: False
-    mask: False
+    depth: True
+    mask: True
     point_cloud: True
   # The cameras that we will be enabled
   cameras:
-    left_shoulder: False
-    right_shoulder: False
-    overhead: False
-    wrist: False
+    left_shoulder: True
+    right_shoulder: True
+    overhead: True
+    wrist: True
     front: True
   # Store depth as 0 - 1
   depth_in_meters: False
   # We want to save the masks as rgb encodings.
-  masks_as_one_channel: False
+  masks_as_one_channel: True
 env:
   task_name: "put_money_in_safe"
   seed: 42
