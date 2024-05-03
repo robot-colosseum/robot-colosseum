@@ -29,6 +29,23 @@ class ShapeExt(Shape):
         self._obj_name: str = self.get_name()
         self._obj_scale: float = 1.0
 
+    def set_friction(self, value: float) -> None:
+        """
+        Updates the friction coefficient of this shape in the simulation
+
+        Parameters
+        ----------
+            value: float
+                The friction value to be updated
+        """
+        # TODO(wilbert): check according to the current physics engine in use
+        self.set_bullet_friction(value)
+
+    def get_friction(self) -> float:
+        """Returns the current friction coefficient of this shape"""
+        # TODO(wilbert): check according to the current physics engine in use
+        return self.get_bullet_friction()
+
     def set_scale(self, scale: float) -> None:
         """
         Scales the shape by a given factor in all directions. The scale method

@@ -8,6 +8,7 @@ from colosseum.variations.camera_pose import CameraPoseVariation
 from colosseum.variations.distractor_object import DistractorObjectVariation
 from colosseum.variations.light_color import LightColorVariation
 from colosseum.variations.object_color import ObjectColorVariation
+from colosseum.variations.object_friction import ObjectFrictionVariation
 from colosseum.variations.object_size import ObjectSizeVariation
 from colosseum.variations.object_texture import ObjectTextureVariation
 from colosseum.variations.table_color import TableColorVariation
@@ -76,6 +77,10 @@ class VariationsManager:
 
             elif factor_type == CameraPoseVariation.VARIATION_ID:
                 variation = CameraPoseVariation.CreateFromConfig(
+                    self._pyrep, factor_name, targets, factor
+                )
+            elif factor_type == ObjectFrictionVariation.VARIATION_ID:
+                variation = ObjectFrictionVariation.CreateFromConfig(
                     self._pyrep, factor_name, targets, factor
                 )
 
