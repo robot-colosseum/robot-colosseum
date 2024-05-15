@@ -112,3 +112,9 @@ env:
         friction_range: [0.75, 1.0]
         friction_same: True
         seed: ${env.seed}
+
+      - variation: object_mass
+        enabled: False
+        targets: [cube]
+        mass_range: [0.5, 2.5]
+        seed: ${env.seed}

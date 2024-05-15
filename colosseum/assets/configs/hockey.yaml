@@ -104,3 +104,9 @@ env:
         friction_range: [0.75, 1.0]
         friction_same: True
         seed: ${env.seed}
+
+      - variation: object_mass
+        enabled: False
+        targets: [hockey_ball]
+        mass_range: [0.1, 0.5]
+        seed: ${env.seed}

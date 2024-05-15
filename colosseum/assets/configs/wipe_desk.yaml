@@ -89,3 +89,9 @@ env:
         targets: [sponge]
         friction_range: [0.75, 1.0]
         friction_same: True
+
+      - variation: object_mass
+        enabled: False
+        targets: [sponge]
+        mass_range: [1.0, 5.0]
+        seed: ${env.seed}

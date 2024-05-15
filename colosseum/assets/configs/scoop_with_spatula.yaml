@@ -116,3 +116,15 @@ env:
         friction_range: [0.75, 1.0]
         friction_same: True
         seed: ${env.seed}
+
+      - variation: object_mass
+        enabled: False
+        targets: [Cuboid]
+        mass_range: [1.0, 5.0]
+        seed: ${env.seed}
+
+      - variation: object_mass
+        enabled: False
+        targets: [scoop_with_spatula_spatula]
+        mass_range: [0.1, 1.0]
+        seed: ${env.seed}
