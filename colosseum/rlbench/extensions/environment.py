@@ -1,7 +1,7 @@
 import inspect
 import os
 import warnings
-from typing import Optional
+from typing import Any, Dict, Optional, Type, cast
 
 from omegaconf import DictConfig
 from pyrep import PyRep
@@ -10,6 +10,7 @@ from rlbench.action_modes.action_mode import ActionMode
 from rlbench.backend.const import TTT_FILE
 from rlbench.backend.robot import Robot
 from rlbench.backend.scene import Scene
+from rlbench.backend.task import Task
 from rlbench.const import SUPPORTED_ROBOTS
 from rlbench.environment import DIR_PATH, Environment
 from rlbench.observation_config import ObservationConfig
@@ -21,6 +22,7 @@ from rlbench.sim2real.domain_randomization import (
 from rlbench.sim2real.domain_randomization_scene import DomainRandomizationScene
 
 from colosseum.rlbench.extensions.scene import SceneExt
+from colosseum.rlbench.extensions.task_environment import TaskEnvironmentExt
 
 # If the user doesn't provide the location of .ttm files, use this as default
 DEFAULT_PATH_TTMS = os.path.join(
@@ -152,3 +154,17 @@ class EnvironmentExt(Environment):
             )
         # ---------------------------------------------------------------------
         self._action_mode.arm_action_mode.set_control_mode(self._robot)
+
+    def get_task(self, task_class: Type[Task]) -> TaskEnvironmentExt:
+
+        # If user hasn't called launch, implicitly call it.
+        if self._pyrep is None:
+            self.launch()
+
+        self._scene.unload()
+        task = task_class(self._pyrep, self._robot)
+        self._prev_task = task
+        return TaskEnvironmentExt(
+            self._pyrep, self._robot, self._scene, task,
+            self._action_mode, self._dataset_root, self._obs_config,
+            self._static_positions, self._attach_grasped_objects)
