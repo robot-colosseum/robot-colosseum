@@ -16,26 +16,24 @@
     <img src="resources/media/gif_perturbation_factors.gif"/>
 </p>
 
-This repository contains the implementation of the benchmark mentioned in the
-title. The code for the benchmark builds on top of [PyRep][0], and integrates
-with [RLBench][1], implementing 20 out of the original 100 tasks.
+Colosseum is a robotic manipulation benchmark built on top of [PyRep][0], which
+implements 20 out of the original 100 tasks from [RLBench][1], and extends it by
+supporting 14 variation factors that randomize parts of the simulation.
 
-Documentation can be found [here][8]
+## Documentation
 
-
-<p align="center">
-  <b> 🚧 REPOSITORY UNDER DEVELOPMENT 🚧 </b>
-  <br>We're migrating our codebase to this repository and adding documentation
-  for the usage of the benchmark. We'll make a public release once we're done.
-</p>
+- Overview: [Overview][8]
+- Getting started: [Installation][9], [Quickstart][10]
+- Data Generation: [Data Generation][11]
+- RVT baseline: [RVT baseline repo][12]
 
 ## Citation
 
 ```bibtex
-@article{pumacay2024colosseum,
+@inproceedings{pumacay2024colosseum,
   title     = {THE COLOSSEUM: A Benchmark for Evaluating Generalization for Robotic Manipulation},
   author    = {Pumacay, Wilbert and Singh, Ishika and Duan, Jiafei and Krishna, Ranjay and Thomason, Jesse and Fox, Dieter},
-  booktitle = {arXiv preprint arXiv:2402.08191},
+  booktitle = {Robotics: Science and Systems (RSS)},
   year      = {2024},
 }
 ```
@@ -50,3 +48,7 @@ Documentation can be found [here][8]
 [6]: <https://jessethomason.com> (jesse-site)
 [7]: <https://homes.cs.washington.edu/~fox> (dieter-site)
 [8]: <https://robot-colosseum.readthedocs.io/en/latest/overview.html> (docs-site)
+[9]: <https://robot-colosseum.readthedocs.io/en/latest/installation.html> (docs-installation)
+[10]: <https://robot-colosseum.readthedocs.io/en/latest/quickstart.html> (docs-quickstart)
+[11]: <https://robot-colosseum.readthedocs.io/en/latest/quickstart.html#collect-demonstrations> (docs-data-collection)
+[12]: <https://github.com/robot-colosseum/rvt_colosseum> (rvt-colosseum-repo)
