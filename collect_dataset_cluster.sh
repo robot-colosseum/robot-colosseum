@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+export PYOPENGL_PLATFORM=opengl
+export DISPLAY=:0.0
 
 if [ $# -eq 0 ]
   then
