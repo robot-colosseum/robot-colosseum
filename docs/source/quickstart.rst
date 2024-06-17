@@ -385,7 +385,7 @@ a section of the ``json`` file associated for the ``open_drawer`` task.
 
 .. code-block:: json
 
-   {
+    {
     "strategy": [
         {
             "spreadsheet_idx": 0,
@@ -403,7 +403,9 @@ a section of the ``json`` file associated for the ``open_drawer`` task.
                 {"type": "table_texture", "name": "any", "enabled": false},
                 {"type": "distractor_object", "name": "any", "enabled": false},
                 {"type": "background_texture", "name": "any", "enabled": false},
-                {"type": "camera_pose", "name": "any", "enabled": false}
+                {"type": "camera_pose", "name": "any", "enabled": false},
+                {"type": "object_friction", "name": "any", "enabled": false},
+                {"type": "object_mass", "name": "any", "enabled": false}
             ]
         },
         {
@@ -422,7 +424,9 @@ a section of the ``json`` file associated for the ``open_drawer`` task.
                 {"type": "table_texture", "name": "any", "enabled": true},
                 {"type": "distractor_object", "name": "any", "enabled": true},
                 {"type": "background_texture", "name": "any", "enabled": true},
-                {"type": "camera_pose", "name": "any", "enabled": true}
+                {"type": "camera_pose", "name": "any", "enabled": true},
+                {"type": "object_friction", "name": "any", "enabled": true},
+                {"type": "object_mass", "name": "any", "enabled": true}
             ]
         },
         {
@@ -441,13 +445,15 @@ a section of the ``json`` file associated for the ``open_drawer`` task.
                 {"type": "table_texture", "name": "any", "enabled": false},
                 {"type": "distractor_object", "name": "any", "enabled": false},
                 {"type": "background_texture", "name": "any", "enabled": false},
-                {"type": "camera_pose", "name": "any", "enabled": false}
+                {"type": "camera_pose", "name": "any", "enabled": false},
+                {"type": "object_friction", "name": "any", "enabled": false},
+                {"type": "object_mass", "name": "any", "enabled": false}
             ]
         },
         {
             "spreadsheet_idx": 3,
             "variation_name" : "recv_obj_color",
-            "enabled": false,
+            "enabled": true,
             "variations": [
                 {"type": "object_color", "name": "manip_obj_color", "enabled": false},
                 {"type": "object_color", "name": "recv_obj_color", "enabled": true},
@@ -460,13 +466,15 @@ a section of the ``json`` file associated for the ``open_drawer`` task.
                 {"type": "table_texture", "name": "any", "enabled": false},
                 {"type": "distractor_object", "name": "any", "enabled": false},
                 {"type": "background_texture", "name": "any", "enabled": false},
-                {"type": "camera_pose", "name": "any", "enabled": false}
+                {"type": "camera_pose", "name": "any", "enabled": false},
+                {"type": "object_friction", "name": "any", "enabled": false},
+                {"type": "object_mass", "name": "any", "enabled": false}
             ]
         },
         {
             "spreadsheet_idx": 4,
             "variation_name" : "manip_obj_tex",
-            "enabled": false,
+            "enabled": true,
             "variations": [
                 {"type": "object_color", "name": "manip_obj_color", "enabled": false},
                 {"type": "object_color", "name": "recv_obj_color", "enabled": false},
@@ -479,7 +487,9 @@ a section of the ``json`` file associated for the ``open_drawer`` task.
                 {"type": "table_texture", "name": "any", "enabled": false},
                 {"type": "distractor_object", "name": "any", "enabled": false},
                 {"type": "background_texture", "name": "any", "enabled": false},
-                {"type": "camera_pose", "name": "any", "enabled": false}
+                {"type": "camera_pose", "name": "any", "enabled": false},
+                {"type": "object_friction", "name": "any", "enabled": false},
+                {"type": "object_mass", "name": "any", "enabled": false}
             ]
         },
 
@@ -522,6 +532,10 @@ all currently available ``idx`` values:
 | ``idx=14``      | ``Camera_Pose`` is enabled                                 |
 +-----------------+------------------------------------------------------------+
 | ``idx=15``      | Both ``RLBench`` and ``Colosseum`` variations are enabled  |
++-----------------+------------------------------------------------------------+
+| ``idx=16``      | ``Object Friction`` is enabled                             |
++-----------------+------------------------------------------------------------+
+| ``idx=17``      | ``Object Mass`` is enabled                                 |
 +-----------------+------------------------------------------------------------+
 
 The script that makes use of this information is the modified ``dataset_generator.py``
