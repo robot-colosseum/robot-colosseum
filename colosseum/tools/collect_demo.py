@@ -3,7 +3,7 @@ import pickle
 
 import hydra
 import numpy as np
-from omegaconf import DictConfig
+from omegaconf import DictConfig, OmegaConf
 from rlbench.action_modes.action_mode import MoveArmThenGripper
 from rlbench.action_modes.arm_action_modes import JointVelocity
 from rlbench.action_modes.gripper_action_modes import Discrete
@@ -17,6 +17,8 @@ from colosseum.rlbench.utils import (
     name_to_class,
     save_demo,
 )
+
+OmegaConf.register_new_resolver("eval", eval)
 
 
 @hydra.main(

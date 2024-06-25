@@ -8,7 +8,7 @@ from typing import Any, Dict, Optional, Type, cast
 
 import hydra
 import numpy as np
-from omegaconf import DictConfig
+from omegaconf import DictConfig, OmegaConf
 from rlbench.action_modes.action_mode import MoveArmThenGripper
 from rlbench.action_modes.arm_action_modes import JointVelocity
 from rlbench.action_modes.gripper_action_modes import Discrete
@@ -29,6 +29,8 @@ from colosseum.rlbench.utils import (
     save_demo,
 )
 from colosseum.variations.utils import safeGetValue
+
+OmegaConf.register_new_resolver("eval", eval)
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 COLLECTION_STRATEGY_CONFIG = os.path.join(

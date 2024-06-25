@@ -1,5 +1,5 @@
 import hydra
-from omegaconf import DictConfig
+from omegaconf import DictConfig, OmegaConf
 from rlbench.action_modes.action_mode import MoveArmThenGripper
 from rlbench.action_modes.arm_action_modes import JointVelocity
 from rlbench.action_modes.gripper_action_modes import Discrete
@@ -7,6 +7,8 @@ from rlbench.action_modes.gripper_action_modes import Discrete
 from colosseum import ASSETS_CONFIGS_FOLDER, TASKS_PY_FOLDER, TASKS_TTM_FOLDER
 from colosseum.rlbench.extensions.environment import EnvironmentExt
 from colosseum.rlbench.utils import ObservationConfigExt, name_to_class
+
+OmegaConf.register_new_resolver("eval", eval)
 
 
 @hydra.main(

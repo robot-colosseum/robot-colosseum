@@ -99,7 +99,7 @@ env:
         enabled: False
         targets: [spawn_boundary1]
         num_objects: 1
-        seed: ${env.seed}
+        seed: "${eval: '${env.seed} + 1'}"
 
       - variation: camera_pose
         enabled: False
