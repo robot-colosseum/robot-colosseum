@@ -30,10 +30,10 @@ supporting 14 variation factors that randomize parts of the simulation.
 ## Citation
 
 ```bibtex
-@inproceedings{pumacay2024colosseum,
+@article{pumacay2024colosseum,
   title     = {THE COLOSSEUM: A Benchmark for Evaluating Generalization for Robotic Manipulation},
   author    = {Pumacay, Wilbert and Singh, Ishika and Duan, Jiafei and Krishna, Ranjay and Thomason, Jesse and Fox, Dieter},
-  booktitle = {Robotics: Science and Systems (RSS)},
+  booktitle = {arXiv preprint arXiv:2402.08191},
   year      = {2024},
 }
 ```
