@@ -14,6 +14,12 @@ which is an old one, and targets old versions of Ubuntu.
    Ubuntu, we have tested it on different OS versions and different OSs, and
    in most cases should work just fine.
 
+.. warning:: If you want to use the baselines for RVT, or PerAct, you will have
+   to install the RLBench fork from `Mohit <https://github.com/MohitShridhar/RLBench/tree/peract>`_,
+   as it contains some changes to the demonstrations and observation classes.
+   Otherwise, your collected data won't have these new fields that are used
+   along the baselines code.
+
 
 1.1. CoppeliaSim Setup
 ++++++++++++++++++++++
@@ -82,16 +88,21 @@ one of the provided samples in PyRep (``pyrep/examples/example_youbot_navigation
 1.3. Setup RLBench
 ++++++++++++++++++++
 
-Once you have ``PyRep`` installed, we can proceed to install ``RLBench``
+Once you have ``PyRep`` installed, we can proceed to install ``RLBench``. Note
+that we're not using the latest version, as it currently is incompatible with
+our repo.
 
-.. note:: If you have the `PerAct`_ fork of ``RLBench``, you can still use our repo,
-   as we have compatibility with both version.
+.. warning:: Recall that if you want to use the baselines, you'll have to use
+   the fork from `Mohit <https://github.com/MohitShridhar/RLBench/tree/peract>`_
+   for the collected demos to be usable with these baselines.
 
 .. code-block:: bash
 
    $ cd $WORKSPACE
    $ . venv/bin/activate
    (venv) $ git clone https://github.com/stepjam/RLBench.git rlbench && cd rlbench
+   # Use an old version of RLBench to avoid incompatibilities
+   (venv) $ git checkout 7c3f425f4a0b6b5ce001ba7246354eb3c70555be
    (venv) $ pip install -r requirements.txt
    (venv) $ pip install .
    (venv) $ cd $WORKSPACE
@@ -189,5 +200,6 @@ Spawn a container using this image for data collection as follows:
 .. _Ubuntu 16.04 Link: https://downloads.coppeliarobotics.com/V4_1_0/CoppeliaSim_Edu_V4_1_0_Ubuntu16_04.tar.xz
 .. _Ubuntu 18.04 Link: https://downloads.coppeliarobotics.com/V4_1_0/CoppeliaSim_Edu_V4_1_0_Ubuntu18_04.tar.xz
 .. _Ubuntu 20.04 Link: https://downloads.coppeliarobotics.com/V4_1_0/CoppeliaSim_Edu_V4_1_0_Ubuntu20_04.tar.xz
-.. _PerAct: https://github.com/peract/peract
 .. _NVIDIA Container Toolkit: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
+.. _RVT: https://github.com/robot-colosseum/rvt_colosseum
+.. _PerAct: https://github.com/peract/peract
