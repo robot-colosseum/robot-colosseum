@@ -234,7 +234,7 @@
         {
             "spreadsheet_idx": 11,
             "variation_name" : "distractor",
-            "enabled": false,
+            "enabled": true,
             "variations": [
                 {"type": "object_color", "name": "manip_obj_color", "enabled": false},
                 {"type": "object_color", "name": "recv_obj_color", "enabled": false},
