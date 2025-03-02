@@ -1,3 +1,4 @@
+from random import shuffle
 from typing import List
 
 import numpy as np
@@ -7,6 +8,7 @@ from rlbench.backend.conditions import DetectedCondition, NothingGrasped
 from rlbench.backend.task import Task
 from rlbench.const import colors
 
+CUPS_NAMES = ["cup1", "cup2", "cup3"]
 
 class StackCups(Task):
     def init_task(self) -> None:
@@ -18,6 +20,10 @@ class StackCups(Task):
         self.cup2_visual = Shape("cup2_visual")
         self.cup3_visaul = Shape("cup3_visual")
 
+        self._cups = [Shape(name) for name in CUPS_NAMES]
+        self._table = Shape("diningTable")
+        self._init_relpose_cup_to_table = {name: cup.get_pose(relative_to=self._table) for cup, name in zip(self._cups, CUPS_NAMES)}
+
         self.register_graspable_objects([self.cup1, self.cup2, self.cup3])
         self.register_success_conditions(
             [
@@ -28,6 +34,10 @@ class StackCups(Task):
         )
 
     def init_episode(self, index: int) -> List[str]:
+        shuffle(self._cups)
+        for name, cup in zip(CUPS_NAMES, self._cups):
+            cup.set_pose(self._init_relpose_cup_to_table[name], relative_to=self._table)
+
         self.variation_index = index
         target_color_name, target_rgb = colors[index]
 
