@@ -49,43 +49,21 @@ class EnvironmentExt(Environment):
         path_task_ttms: str = DEFAULT_PATH_TTMS,
         env_config: DictConfig = DictConfig({}),
     ):
-        # HACK: This is a workaround for the case of using RLBench from PerAct
-        arg_count: int = len(inspect.signature(Environment.__init__).parameters)
-        if arg_count == 12:
-            # Using implementation from RLBench fork from PerAct
-            super().__init__(
-                action_mode,
-                dataset_root,
-                obs_config,
-                headless,
-                static_positions,
-                robot_setup,
-                randomize_every,  # type: ignore
-                frequency,
-                vis_random_config,  # type: ignore
-                dyn_random_config,  # type: ignore
-                attach_grasped_objects,
-            )
-        elif arg_count == 13:
-            # Using implementation from RLBench upstream repo
-            super().__init__(
-                action_mode,
-                dataset_root,
-                obs_config,
-                headless,
-                static_positions,
-                robot_setup,
-                randomize_every,  # type: ignore
-                frequency,
-                vis_random_config,  # type: ignore
-                dyn_random_config,  # type: ignore
-                attach_grasped_objects,
-                shaped_rewards,  # type: ignore
-            )
-        else:
-            raise RuntimeError(
-                "Unexpected number of arguments in Environment.__init__"
-            )
+        # Note that Environment has arguments `arm_max_velocity: float = 1.0, arm_max_acceleration: float = 4.0`
+        super().__init__(
+            action_mode,
+            dataset_root,
+            obs_config,
+            headless,
+            static_positions,
+            robot_setup,
+            randomize_every,  # type: ignore
+            frequency,
+            vis_random_config,  # type: ignore
+            dyn_random_config,  # type: ignore
+            attach_grasped_objects,
+            shaped_rewards,  # type: ignore
+        )
 
         self._path_task_ttms: str = path_task_ttms
         self._use_variations: bool = use_variations
